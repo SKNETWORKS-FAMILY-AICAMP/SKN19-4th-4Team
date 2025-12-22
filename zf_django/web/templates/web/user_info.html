@@ -1,0 +1,379 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 정보 입력</title>
+    <script src="{% static 'js/main.js' %}"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #065f46;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #047857;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #064e3b;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #dc2626;
+            margin-left: 2px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #d1fae5;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f0fdf4;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        input[type="text"]:read-only {
+            background: #ecfdf5;
+            cursor: not-allowed;
+            border-color: #a7f3d0;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .radio-option {
+            flex: 1;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-option label {
+            display: block;
+            padding: 12px;
+            border: 2px solid #d1fae5;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f0fdf4;
+            font-weight: 500;
+            margin-bottom: 0;
+            color: #065f46;
+        }
+
+        .radio-option input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-color: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .radio-option label:hover {
+            border-color: #10b981;
+            transform: translateY(-2px);
+            background: #ecfdf5;
+        }
+
+        .radio-option input[type="radio"]:checked + label:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23065f46' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+            color: #065f46;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #059669;
+            margin-top: 5px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👤 사용자 정보</h1>
+        <p class="subtitle">정확한 주택 정보 제공을 위해 필요한 정보입니다</p>
+        
+        <form id="userInfoForm">
+            <!-- 1. 사용자 ID (자동 부여) -->
+            <div class="form-group">
+                <label class="form-label">사용자 ID</label>
+                <div class="user-id-display" id="userIdDisplay" style="background: #ecfdf5; border: 1px solid #a7f3d0; padding: 12px 16px; border-radius: 10px; color: #065f46; font-weight: 500;">로딩 중...</div>
+                <input type="hidden" id="userId" name="userId">
+                <div class="input-hint">자동으로 생성됩니다</div>
+            </div>
+
+            <!-- 2. 나이 -->
+            <div class="form-group">
+                <label for="age">나이 <span style="font-size: 12px; color: #059669; font-weight: 400; margin-left: 4px;">만 나이를 입력해주세요</span></label>
+                <input type="number" id="age" name="age" min="19" max="100" placeholder="예: 30">
+                <div class="input-hint">선택사항입니다</div>
+            </div>
+
+            <!-- 3. 희망 거주지 -->
+            <div class="form-group">
+                <label for="location">희망 거주지</label>
+                <select id="location" name="location">
+                    <option value="">선택해주세요</option>
+                    <option value="서울특별시">서울특별시</option>
+                    <option value="부산광역시">부산광역시</option>
+                    <option value="대구광역시">대구광역시</option>
+                    <option value="인천광역시">인천광역시</option>
+                    <option value="광주광역시">광주광역시</option>
+                    <option value="대전광역시">대전광역시</option>
+                    <option value="울산광역시">울산광역시</option>
+                    <option value="세종특별자치시">세종특별자치시</option>
+                    <option value="경기도">경기도</option>
+                    <option value="강원도">강원도</option>
+                    <option value="충청북도">충청북도</option>
+                    <option value="충청남도">충청남도</option>
+                    <option value="전라북도">전라북도</option>
+                    <option value="전라남도">전라남도</option>
+                    <option value="경상북도">경상북도</option>
+                    <option value="경상남도">경상남도</option>
+                    <option value="제주특별자치도">제주특별자치도</option>
+                </select>
+                <div class="input-hint">선택사항입니다</div>
+            </div>
+
+            <!-- 4. 결혼 여부 (새로 추가) -->
+            <div class="form-group">
+                <label>결혼 여부</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="married" name="maritalStatus" value="Y">
+                        <label for="married">유</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="single" name="maritalStatus" value="N">
+                        <label for="single">무</label>
+                    </div>
+                </div>
+                <div class="input-hint">선택사항입니다</div>
+            </div>
+
+            <!-- 5. 자녀 수 (새로 추가) -->
+            <div class="form-group">
+                <label for="children">자녀 수</label>
+                <select id="children" name="children">
+                    <option value="">선택해주세요</option>
+                    <option value="0">0명</option>
+                    <option value="1">1명</option>
+                    <option value="2">2명</option>
+                    <option value="3">3명</option>
+                    <option value="4">4명 이상</option>
+                </select>
+                <div class="input-hint">선택사항입니다</div>
+            </div>
+
+            <!-- 6. 상세 신청자격 -->
+            <div class="form-group">
+                <label for="eligibility">상세 신청자격</label>
+                <select id="eligibility" name="eligibility">
+                    <option value="">선택해주세요</option>
+                    <option value="청년">청년</option>
+                    <option value="예비신혼부부">예비 신혼부부</option>
+                    <option value="신혼부부">신혼부부</option>
+                    <option value="고령자">고령자</option>
+                    <option value="다자녀가구">다자녀가구</option>
+                    <option value="장애인">장애인</option>
+                    <option value="일반">일반</option>
+                </select>
+                <div class="input-hint">선택사항입니다</div>
+            </div>
+
+            <!-- 7. 소득정보 -->
+            <div class="form-group">
+                <label for="income">연소득 (만원) <span style="font-size: 12px; color: #059669; font-weight: 400; margin-left: 4px;">연간 총소득을 만원 단위로 입력해주세요</span></label>
+                <input type="number" id="income" name="income" min="0" placeholder="예: 3000">
+                <div class="input-hint">선택사항입니다</div>
+            </div>
+
+            <button type="submit" class="btn-submit">💬 시작하기</button>
+        </form>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        // ===================================
+        // 사용자 키 생성 함수 (main.js와 동일)
+        // ===================================
+        function getOrCreateUserKey() {
+            let userKey = localStorage.getItem('user_key');
+            
+            if (!userKey) {
+                // 랜덤 닉네임 생성 (형용사 + 동물)
+                const adjectives = [
+                    '귀여운', '매콤한', '상큼한', '든든한', '신나는', 
+                    '차분한', '활발한', '똑똑한', '용감한', '재치있는',
+                    '멋진', '깜찍한', '씩씩한', '당당한', '열정적인'
+                ];
+                
+                const animals = [
+                    '고양이', '강아지', '토끼', '햄스터', '다람쥐',
+                    '코알라', '판다', '여우', '사슴', '수달',
+                    '펭귄', '부엉이', '참새', '앵무새', '청설모'
+                ];
+                
+                const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
+                const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+                
+                userKey = `${randomAdj} ${randomAnimal}`;
+                
+                // localStorage에 저장
+                localStorage.setItem('user_key', userKey);
+                console.log('새로운 user_key 생성:', userKey);
+            } else {
+                console.log('기존 user_key 사용:', userKey);
+            }
+            
+            return userKey;
+        }
+
+        // ===================================
+        // 페이지 로드 시 사용자 ID 설정
+        // ===================================
+        window.addEventListener('DOMContentLoaded', function() {
+            const userId = getOrCreateUserKey();
+            document.getElementById('userIdDisplay').textContent = userId;
+            document.getElementById('userId').value = userId;
+        });
+
+        // ===================================
+        // 폼 제출 처리
+        // ===================================
+        document.getElementById('userInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const userId = getOrCreateUserKey(); // 동일한 user_key 사용
+
+            // 결혼 여부 값 가져오기 (선택하지 않았을 경우 빈 문자열)
+            const maritalStatusRadio = document.querySelector('input[name="maritalStatus"]:checked');
+            const maritalStatus = maritalStatusRadio ? maritalStatusRadio.value : '';
+
+            // 폼 데이터 수집 (필수값이 아닌 경우 null 또는 빈 문자열)
+            const formData = {
+                userId: userId,
+                age: document.getElementById('age').value ? parseInt(document.getElementById('age').value) : null,
+                location: document.getElementById('location').value || '',
+                maritalStatus: maritalStatus,
+                children: document.getElementById('children').value ? parseInt(document.getElementById('children').value) : null,
+                eligibility: document.getElementById('eligibility').value || '',
+                income: document.getElementById('income').value ? parseInt(document.getElementById('income').value) : null
+            };
+
+            // sessionStorage와 localStorage에 저장
+            sessionStorage.setItem('userInfo', JSON.stringify(formData));
+            localStorage.setItem('userInfo', JSON.stringify(formData));
+
+            console.log('저장된 사용자 정보:', formData);
+
+            // 메인 페이지로 이동
+            window.location.href = '{% url "web:main" %}';
+        });
+    </script>
+</body>
+</html>

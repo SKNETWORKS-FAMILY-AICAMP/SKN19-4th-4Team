@@ -1,0 +1,32 @@
+.env
+
+.vscode
+.local
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.venv
+venv
+env
+
+# 내 경로 데이터
+lab/whatsup/DATA
+lab/whatsup/kjm
+lab/kjm/data/
+lab/kjm/model_cache/
+backup/
+
+sql/
+
+# macOS
+.DS_Store
+
+
+*.sqlite3
+
+# 작업용
+hidden/

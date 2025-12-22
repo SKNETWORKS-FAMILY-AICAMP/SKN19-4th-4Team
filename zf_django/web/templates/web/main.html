@@ -1,0 +1,665 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈 - 집핏 ZIPFIT</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    
+    <style>
+        /* 히어로 섹션 */
+        .main-hero-section {
+            background: linear-gradient(135deg, #009966 0%, #00a63e 100%);
+            border-radius: 24px;
+            padding: 48px 56px;
+            margin: 20px 32px 32px 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: calc(100vh - 140px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .main-hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        /* 히어로 상단 그리드 (좌우 2단) */
+        .hero-two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+        
+        .hero-left-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            width: fit-content;
+            color: white;
+        }
+        
+        .hero-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .hero-main-title {
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin: 0;
+            color: white;
+        }
+        
+        .hero-subtitle {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.95;
+            margin: 0;
+            color: white;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
+        }
+        
+        .hero-btn {
+            padding: 13px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            -webkit-tap-highlight-color: rgba(0, 153, 102, 0.2);
+            touch-action: manipulation;
+        }
+        
+        .hero-btn-primary {
+            background: white;
+            color: #009966;
+        }
+        
+        .hero-btn-primary:hover,
+        .hero-btn-primary:active {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hero-btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .hero-btn-secondary:hover,
+        .hero-btn-secondary:active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        /* 우측 기능 카드 그리드 */
+        .hero-cards-grid {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 14px;
+        }
+        
+        .hero-feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .hero-feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .hero-feature-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .hero-feature-content h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin: 0 0 4px 0;
+        }
+        
+        .hero-feature-content p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+        
+        /* 통계 그리드 (전체 너비) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.9;
+            color: white;
+        }
+        
+        /* 반응형 */
+        @media (max-width: 1024px) {
+            .hero-two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .main-hero-section {
+                padding: 40px 24px;
+                margin: 16px;
+            }
+            
+            .hero-main-title {
+                font-size: 32px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-edit-modal {
+                max-width: 90%;
+                padding: 24px;
+                max-height: 90vh;
+            }
+        }
+        
+        /* 채팅 히스토리 클릭 가능하게 */
+        .chat-history-item {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .chat-history-item:hover {
+            background: #f4f4f5;
+        }
+    </style>
+</head>
+<body>
+    <!-- 모바일 메뉴 토글 -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleSidebar(event)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+    </button>
+    
+    <!-- 사이드바 오버레이 (모바일) -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    
+    <div class="app-container">
+        <!-- 사이드바 -->
+        <aside class="sidebar">
+            <!-- 사이드바 헤더 -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <div class="logo-bg">
+                            <svg class="logo-house" viewBox="0 0 20 22" fill="none">
+                                <path d="M9.72 0.72L0.72 8.64V20.52H6.12V13.32H13.32V20.52H18.72V8.64L9.72 0.72Z" 
+                                      fill="url(#logoGrad1)" 
+                                      stroke="url(#logoGrad2)" 
+                                      stroke-width="1.44" 
+                                      stroke-linejoin="round"/>
+                                <defs>
+                                    <linearGradient id="logoGrad1" x1="0.72" y1="0.72" x2="18.72" y2="20.52" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#10B981"/>
+                                        <stop offset="1" stop-color="#059669"/>
+                                    </linearGradient>
+                                    <linearGradient id="logoGrad2" x1="0.72" y1="0.72" x2="18.72" y2="20.52" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#10B981"/>
+                                        <stop offset="1" stop-color="#059669"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="logo-text">
+                        <h2>집핏</h2>
+                        <p>ZIPFIT</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 네비게이션 -->
+            <nav class="sidebar-nav">
+                <a href="{% url 'web:main' %}" class="nav-item active">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <path d="M12.5 17.5V10.8333C12.5 10.6123 12.4122 10.4004 12.2559 10.2441C12.0996 10.0878 11.8877 10 11.6667 10H8.33333C8.11232 10 7.90036 10.0878 7.74408 10.2441C7.5878 10.4004 7.5 10.6123 7.5 10.8333V17.5" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2.5 8.33333C2.49994 8.09089 2.55278 7.85135 2.65482 7.63143C2.75687 7.41151 2.90566 7.2165 3.09083 7.06L8.92417 2.06C9.22499 1.80576 9.60613 1.66627 10 1.66627C10.3939 1.66627 10.775 1.80576 11.0758 2.06L16.9092 7.06C17.0943 7.2165 17.2431 7.41151 17.3452 7.63143C17.4472 7.85135 17.5001 8.09089 17.5 8.33333V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V8.33333Z" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>홈</span>
+                </a>
+                <a href="{% url 'web:chat' %}" class="nav-item" onclick="clearAnnouncementContext()">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <path d="M18.3333 14.1667C18.3333 14.6087 18.1577 15.0326 17.8452 15.3452C17.5326 15.6577 17.1087 15.8333 16.6667 15.8333H5.69C5.24801 15.8334 4.82415 16.0091 4.51167 16.3217L2.67667 18.1567C2.59392 18.2394 2.4885 18.2957 2.37374 18.3186C2.25898 18.3414 2.14003 18.3297 2.03192 18.2849C1.92382 18.2401 1.83142 18.1643 1.7664 18.067C1.70139 17.9697 1.66668 17.8553 1.66667 17.7383V4.16667C1.66667 3.72464 1.84226 3.30072 2.15482 2.98816C2.46738 2.67559 2.89131 2.5 3.33333 2.5H16.6667C17.1087 2.5 17.5326 2.67559 17.8452 2.98816C18.1577 3.30072 18.3333 3.72464 18.3333 4.16667V14.1667Z" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>AI 상담</span>
+                    <span class="badge">Main</span>
+                </a>
+                <a href="{% url 'web:list' %}" class="nav-item">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <path d="M5 18.3333C4.55797 18.3333 4.13405 18.1577 3.82149 17.8452C3.50893 17.5326 3.33333 17.1087 3.33333 16.6667V3.33334C3.33333 2.89131 3.50893 2.46739 3.82149 2.15482C4.13405 1.84226 4.55797 1.66667 5 1.66667H11.6667C11.9305 1.66624 12.1917 1.718 12.4354 1.81898C12.6791 1.91995 12.9005 2.06814 13.0867 2.255L16.0767 5.245C16.264 5.43126 16.4126 5.65279 16.5139 5.8968C16.6152 6.14082 16.6671 6.40248 16.6667 6.66667V16.6667C16.6667 17.1087 16.4911 17.5326 16.1785 17.8452C15.866 18.1577 15.442 18.3333 15 18.3333H5Z" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M11.6667 1.66667V5.83333C11.6667 6.05435 11.7545 6.26631 11.9107 6.42259C12.067 6.57887 12.279 6.66667 12.5 6.66667H16.6667" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8.33333 7.5H6.66667" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13.3333 10.8333H6.66667" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13.3333 14.1667H6.66667" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>공고 목록</span>
+                </a>
+
+                <!-- 채팅 히스토리 -->
+                <div class="chat-history mt-3" id="chatHistoryList">
+                    <!-- 동적으로 로드됨 -->
+                </div>
+            </nav>
+
+            <!-- 사용자 정보 (클릭 시 수정 페이지로 이동) -->
+            <div class="user-info" onclick="window.location.href='{% url 'web:user_info_modify' %}'" style="cursor: pointer;" title="클릭하여 정보 수정">
+                <div class="user-avatar" id="userAvatar">매</div>
+                <div class="user-details">
+                    <h5 id="userDisplayName">사용자</h5>
+                    <p id="userDisplayInfo">정보 없음</p>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 6L8 10L12 6" stroke="#9F9FA9" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </aside>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <!-- 헤더 -->
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>홈</h1>
+                    <p>LH · SH · GH 공식 정보 기반</p>
+                </div>
+                <div class="header-actions">
+                    <span class="badge-lh">LH</span>
+                    <span class="badge-sh">SH</span>
+                    <span class="badge-gh">GH</span>
+                </div>
+            </header>
+
+            <!-- 메인 히어로 섹션 -->
+            <div class="main-hero-section">
+                <!-- 상단: 좌우 2단 그리드 -->
+                <div class="hero-two-column">
+                    <!-- 좌측: 메인 콘텐츠 -->
+                    <div class="hero-left-content">
+                        <div class="hero-badge">
+                            <svg viewBox="0 0 16 16" fill="none">
+                                <path d="M8 14.6667C11.6819 14.6667 14.6667 11.6819 14.6667 8C14.6667 4.3181 11.6819 1.33333 8 1.33333C4.3181 1.33333 1.33333 4.3181 1.33333 8C1.33333 11.6819 4.3181 14.6667 8 14.6667Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 4V8L10.6667 9.33333" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>AI 기반 공공주택 정보 플랫폼</span>
+                        </div>
+                        
+                        <h1 class="hero-main-title">
+                            <span id="welcomeUserName">매콤한 숫사슴</span>님, 환영합니다!
+                        </h1>
+                        
+                        <p class="hero-subtitle">
+                            LH, SH, GH의 실제 공고 문서를 AI가 분석하여 정확하고 명확한 답변을 제공합니다
+                        </p>
+                        
+                        <div class="hero-buttons">
+                            <a href="{% url 'web:chat' %}" class="hero-btn hero-btn-primary" onclick="clearSessionAndNavigate(event)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M18.3333 14.1667C18.3333 14.6087 18.1577 15.0326 17.8452 15.3452C17.5326 15.6577 17.1087 15.8333 16.6667 15.8333H5.69C5.24801 15.8334 4.82415 16.0091 4.51167 16.3217L2.67667 18.1567C2.59392 18.2394 2.4885 18.2957 2.37374 18.3186C2.25898 18.3414 2.14003 18.3297 2.03192 18.2849C1.92382 18.2401 1.83142 18.1643 1.7664 18.067C1.70139 17.9697 1.66668 17.8553 1.66667 17.7383V4.16667C1.66667 3.72464 1.84226 3.30072 2.15482 2.98816C2.46738 2.67559 2.89131 2.5 3.33333 2.5H16.6667C17.1087 2.5 17.5326 2.67559 17.8452 2.98816C18.1577 3.30072 18.3333 3.72464 18.3333 4.16667V14.1667Z" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                AI 상담 시작하기
+                            </a>
+                            <a href="{% url 'web:list' %}" class="hero-btn hero-btn-secondary">
+                                공고 둘러보기
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M6 12L10 8L6 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 우측: 기능 카드 3개 -->
+                    <div class="hero-cards-grid">
+                        <div class="hero-feature-card">
+                            <div class="hero-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="hero-feature-content">
+                                <h3>AI 기반 분석</h3>
+                                <p>실시간 공고 분석</p>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-feature-card">
+                            <div class="hero-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 8V12L15 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="hero-feature-content">
+                                <h3>정확한 정보</h3>
+                                <p>LH·SH·GH 공식 문서</p>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-feature-card">
+                            <div class="hero-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="hero-feature-content">
+                                <h3>맞춤형 추천</h3>
+                                <p>개인별 최적화</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 하단: 통계 4개 (전체 너비) -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="statTotalAnnc">-</div>
+                        <div class="stat-label">등록된 공고</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statNewThisWeek">-</div>
+                        <div class="stat-label">이번 주 신규</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statTotalChat">-</div>
+                        <div class="stat-label">누적 상담</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statActiveUsers">-</div>
+                        <div class="stat-label">활성 사용자</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/mockData.js' %}"></script>
+    <script>
+        // 공고 컨텍스트 초기화 함수 (사이드바 AI 상담 클릭 시 호출)
+        function clearAnnouncementContext() {
+            sessionStorage.removeItem('currentAnnouncementId');
+            sessionStorage.removeItem('currentAnnouncementName');
+            // 🔥 세션도 초기화하여 새로운 대화 시작
+            sessionStorage.removeItem('current_session_id');
+        }
+
+        // 세션 초기화 후 채팅 페이지로 이동
+        function clearSessionAndNavigate(event) {
+            event.preventDefault();
+            // 🔥 세션 및 공고 컨텍스트 초기화
+            sessionStorage.removeItem('current_session_id');
+            sessionStorage.removeItem('currentAnnouncementId');
+            sessionStorage.removeItem('currentAnnouncementName');
+            // 채팅 페이지로 이동
+            window.location.href = '{% url "web:chat" %}';
+        }
+
+        // ===================================
+        // 사용자 정보 표시
+        // ===================================
+        function loadUserInfo() {
+            try {
+                const savedData = sessionStorage.getItem('userInfo') || localStorage.getItem('userInfo');
+                const userKey = getOrCreateUserKey();
+                
+                // user_key를 userId로 사용
+                document.getElementById('userDisplayName').textContent = userKey;
+                document.getElementById('userAvatar').textContent = userKey.charAt(0);
+                document.getElementById('welcomeUserName').textContent = userKey;
+                
+                if (savedData) {
+                    const userInfo = JSON.parse(savedData);
+                    
+                    let infoText = '';
+                    if (userInfo.age) infoText += userInfo.age + '세';
+                    if (userInfo.location) {
+                        if (infoText) infoText += ' · ';
+                        infoText += userInfo.location;
+                    }
+                    if (infoText) {
+                        document.getElementById('userDisplayInfo').textContent = infoText;
+                    }
+                }
+            } catch (error) {
+                console.error('사용자 정보 로드 오류:', error);
+            }
+        }
+        
+        // ===================================
+        // 공고 요약 정보 로드 및 표시
+        // ===================================
+        async function loadAnncSummary() {
+            try {
+                const response = await API.getAnnouncementSummary();
+                
+                if (response.status === 'success' && response.data) {
+                    updateAnncSummary(response.data);
+                } else {
+                    console.error('공고 요약 정보 조회 실패:', response);
+                    document.getElementById('statTotalAnnc').textContent = '0';
+                }
+            } catch (error) {
+                console.error('공고 요약 정보 조회 실패:', error);
+                document.getElementById('statTotalAnnc').textContent = '0';
+            }
+        }
+        
+        function updateAnncSummary(data) {
+            document.getElementById('statTotalAnnc').textContent = formatNumber(data.cnt_total || 0);
+            
+            const newThisWeek = data.cnt_new_this_week !== undefined 
+                ? data.cnt_new_this_week 
+                : (window.mockStats?.new_this_week || 42);
+            document.getElementById('statNewThisWeek').textContent = formatNumber(newThisWeek);
+            
+            const stats = window.mockStats || {
+                "total_chat": 15823,
+                "active_users": 3492
+            };
+            
+            document.getElementById('statTotalChat').textContent = formatNumber(stats.total_chat || 15823);
+            document.getElementById('statActiveUsers').textContent = formatNumber(stats.active_users || 3492);
+        }
+        
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        
+        // ===================================
+        // 채팅 히스토리 로드
+        // ===================================
+        async function loadChatHistories() {
+            const chatHistoryList = document.getElementById('chatHistoryList');
+            if (!chatHistoryList) return;
+            
+            try {
+                const userKey = getOrCreateUserKey();
+                const response = await callApi(`/api/chathistories?user_key=${userKey}`, 'GET');
+                
+                if (response.status === 'success' && response.data && Array.isArray(response.data)) {
+                    chatHistoryList.innerHTML = '';
+                    
+                    response.data.forEach(history => {
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'chat-history-item';
+                        historyItem.onclick = () => {
+                            window.location.href = `{% url "web:chat" %}?session_id=${history.session_id}`;
+                        };
+                        historyItem.innerHTML = `
+                            <h5>${history.title}</h5>
+                            <p>최근 대화...</p>
+                        `;
+                        chatHistoryList.appendChild(historyItem);
+                    });
+                }
+            } catch (error) {
+                console.error('채팅 히스토리 조회 실패:', error);
+            }
+        }
+        
+        // ===================================
+        // 페이지 로드 시 실행
+        // ===================================
+        window.addEventListener('load', function() {
+            loadUserInfo();
+            loadAnncSummary();
+            loadChatHistories();
+        });
+        
+        // ===================================
+        // 사이드바 토글 (모바일)
+        // ===================================
+        window.toggleSidebar = function(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            if (sidebar) {
+                const isActive = sidebar.classList.contains('show') || sidebar.classList.contains('active');
+                
+                if (isActive) {
+                    sidebar.classList.remove('show');
+                    sidebar.classList.remove('active');
+                    if (overlay) {
+                        overlay.classList.remove('show');
+                        overlay.classList.remove('active');
+                    }
+                } else {
+                    sidebar.classList.add('show');
+                    sidebar.classList.add('active');
+                    if (overlay) {
+                        overlay.classList.add('show');
+                        overlay.classList.add('active');
+                    }
+                }
+            }
+        };
+        
+        // ===================================
+        // 모바일 메뉴 이벤트 리스너
+        // ===================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.querySelector('.mobile-menu-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.toggleSidebar(e);
+                });
+                toggleBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.toggleSidebar(e);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

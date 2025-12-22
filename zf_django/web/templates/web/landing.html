@@ -1,0 +1,575 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>집핏 ZIPFIT - 나에게 딱 맞는 집</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: white;
+            overflow-x: hidden;
+        }
+        
+        /* 첫 번째 섹션: 히어로 */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(236, 253, 245, 0.8) 0%, rgba(209, 250, 229, 0.5) 100%);
+        }
+        
+        /* 배경 블러 효과 */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            top: -140px;
+            left: 225px;
+        }
+        
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(5, 150, 105, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            top: 230px;
+            left: 275px;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 500px;
+        }
+        
+        /* 로고 */
+        .hero-logo {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 32px;
+        }
+        
+        .hero-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* 타이틀 */
+        .hero-subtitle {
+            font-size: 24px;
+            color: #52525c;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+        
+        .hero-title {
+            font-size: 96px;
+            font-weight: 700;
+            background: linear-gradient(161deg, #009966 0%, #00c950 50%, #007a55 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 32px;
+            letter-spacing: -1.92px;
+        }
+        
+        /* 버튼 */
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 48px;
+        }
+        
+        .btn-outline {
+            background: white;
+            border: 1.6px solid #e4e4e7;
+            color: #18181b;
+            padding: 14px 42px;
+            border-radius: 100px;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 168px;
+        }
+        
+        .btn-outline:hover {
+            background: #fafafa;
+            color: #18181b;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #009966 0%, #00a63e 100%);
+            border: none;
+            color: white;
+            padding: 14px 42px;
+            border-radius: 100px;
+            font-size: 16px;
+            text-decoration: none;
+            box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 168px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 12px 20px -4px rgba(0, 153, 102, 0.3);
+            color: white;
+        }
+        
+        /* 스크롤 아이콘 */
+        .scroll-indicator {
+            text-align: center;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+        
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* 두 번째 섹션: Why ZIPFIT */
+        .why-section {
+            background: #fafafa;
+            padding: 80px 32px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .why-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .why-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .why-label {
+            font-size: 14px;
+            letter-spacing: 0.7px;
+            color: #71717b;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        
+        .why-title {
+            font-size: 48px;
+            color: #18181b;
+            font-weight: 400;
+        }
+        
+        .why-title-highlight {
+            background: linear-gradient(90deg, #009966 0%, #00a63e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            transition: transform 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        
+        .feature-icon.green {
+            background: #d0fae5;
+        }
+        
+        .feature-icon.light-green {
+            background: #d1fae5;
+        }
+        
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            color: #18181b;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+        
+        .feature-description {
+            font-size: 16px;
+            color: #52525c;
+            line-height: 1.6;
+        }
+        
+        /* 세 번째 섹션: CTA (녹색 톤으로 변경) */
+        .cta-section {
+            position: relative;
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            padding: 80px 32px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        /* CTA 섹션 배경 블러 효과 */
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            top: -100px;
+            right: -100px;
+        }
+        
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(5, 150, 105, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            bottom: -100px;
+            left: -100px;
+        }
+        
+        .cta-title {
+            position: relative;
+            z-index: 2;
+            font-size: 48px;
+            color: white;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+        
+        .cta-subtitle {
+            position: relative;
+            z-index: 2;
+            font-size: 18px;
+            color: #d1fae5;
+            margin-bottom: 32px;
+        }
+        
+        .btn-cta {
+            position: relative;
+            z-index: 2;
+            background: white;
+            color: #065f46;
+            border: none;
+            padding: 14px 42px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 24px 30px -6px rgba(0, 0, 0, 0.3);
+            color: #047857;
+            background: #ecfdf5;
+        }
+        
+        .btn-cta svg path {
+            stroke: #065f46;
+        }
+        
+        .btn-cta:hover svg path {
+            stroke: #047857;
+        }
+        
+        /* 푸터 */
+        .footer {
+            background: #fafafa;
+            border-top: 0.8px solid #e4e4e7;
+            padding: 48px 32px 32px;
+        }
+        
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-copyright {
+            font-size: 14px;
+            color: #52525c;
+        }
+        
+        .footer-badges {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .footer-badge {
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-lh {
+            background: #eff6ff;
+            color: #155dfc;
+        }
+        
+        .badge-sh {
+            background: #f0fdf4;
+            color: #00a63e;
+        }
+        
+        .badge-gh {
+            background: #faf5ff;
+            color: #9810fa;
+        }
+        
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 64px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .cta-title {
+                font-size: 36px;
+            }
+            
+            .cta-subtitle {
+                font-size: 16px;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 첫 번째 섹션: 히어로 -->
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <!-- 로고 -->
+            <div class="hero-logo">
+                <svg viewBox="0 0 96 96" fill="none">
+                    <rect width="96" height="96" rx="15.36" fill="white"/>
+                    <path d="M48 19.2L24 40.32V72H38.4V52.8H57.6V72H72V40.32L48 19.2Z" 
+                          fill="url(#grad1)" 
+                          stroke="url(#grad2)" 
+                          stroke-width="3.84" 
+                          stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="grad1" x1="24" y1="19.2" x2="72" y2="72" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#10B981"/>
+                            <stop offset="1" stop-color="#059669"/>
+                        </linearGradient>
+                        <linearGradient id="grad2" x1="24" y1="19.2" x2="72" y2="72" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#10B981"/>
+                            <stop offset="1" stop-color="#059669"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            
+            <!-- 타이틀 -->
+            <p class="hero-subtitle">나에게 딱 맞는 집,</p>
+            <h1 class="hero-title">ZIPFIT</h1>
+            
+            <!-- 버튼 -->
+            <div class="hero-buttons">
+                <a href="{% url 'web:user_info' %}?reset=1" class="btn-primary" onclick="sessionStorage.removeItem('userInfo');">
+                    시작하기
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M3.33333 8H12.6667" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 3.33333L12.6667 8L8 12.6667" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="#why-section" class="btn-outline">더 알아보기</a>
+            </div>
+            
+            <!-- 스크롤 아이콘 -->
+            <div class="scroll-indicator" onclick="scrollToSection('why-section')">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M8 10L12 14L16 10" stroke="#9F9FA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 두 번째 섹션: Why ZIPFIT -->
+    <section class="why-section" id="why-section">
+        <div class="why-container">
+            <div class="why-header">
+                <p class="why-label">Why ZIPFIT</p>
+                <h2 class="why-title">왜 <span class="why-title-highlight">집핏</span>인가요?</h2>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#009966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 2V8H20" stroke="#009966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10 9H8" stroke="#009966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 13H8" stroke="#009966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 17H8" stroke="#009966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">복잡한 공고 문서</h3>
+                    <p class="feature-description">공공주거 공고는 복잡하고 구조가 달라서, 이해하기 어렵습니다.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon light-green">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 18V5" stroke="#00A63E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 15L12 22L19 15" stroke="#00A63E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 9L12 2L5 9" stroke="#00A63E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">AI 기반 문서 분석</h3>
+                    <p class="feature-description">LLM이 비정형 문서를 읽고, 맥락을 이해하며 질문에 답합니다.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#009966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#009966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">맞춤형 정보 제공</h3>
+                    <p class="feature-description">단순 나열이 아닌, 내 조건에 맞는지 분석하고 설명합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 세 번째 섹션: CTA (녹색 톤으로 수정) -->
+    <section class="cta-section">
+        <h2 class="cta-title">지금 바로 시작하세요</h2>
+        <p class="cta-subtitle">복잡한 공고 분석부터 자격 확인, AI 상담까지</p>
+        <a href="{% url 'web:user_info' %}?reset=1" class="btn-cta" onclick="sessionStorage.removeItem('userInfo');">
+            무료로 시작하기
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3.33333 8H12.6667" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 3.33333L12.6667 8L8 12.6667" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+    </section>
+    
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p class="footer-copyright">© 2025 ZIPFIT. All rights reserved.</p>
+            <div class="footer-badges">
+                <span class="footer-badge badge-lh">LH</span>
+                <span class="footer-badge badge-sh">SH</span>
+                <span class="footer-badge badge-gh">GH</span>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 부드러운 스크롤
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // "더 알아보기" 버튼 클릭 시 스크롤
+        document.querySelector('.btn-outline').addEventListener('click', function(e) {
+            e.preventDefault();
+            scrollToSection('why-section');
+        });
+    </script>
+</body>
+</html>

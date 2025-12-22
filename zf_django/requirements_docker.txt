@@ -1,0 +1,15 @@
+gunicorn==22.0.0
+asgiref==3.11.0
+Django==6.0
+djangorestframework==3.16.1
+drf-spectacular==0.29.0
+langgraph
+openai
+numpy==2.3.5
+pgvector==0.4.2
+psycopg2-binary==2.9.11
+python-decouple==3.8
+setuptools==80.9.0
+sqlparse==0.5.4
+tzdata==2025.2
+wheel==0.45.1
